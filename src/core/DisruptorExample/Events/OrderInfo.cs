@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace DisruptorExample.Events
 {
     [StructLayout(LayoutKind.Explicit)]
-    public class OrderInfo
+    public struct OrderInfo
     {
         [FieldOffset(0)] 
         public long Id;

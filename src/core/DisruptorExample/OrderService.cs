@@ -40,7 +40,7 @@ namespace DisruptorExample
             var orderEventHandler = new OrderEventHandler();
 
             _orderBatchProcessor = BatchEventProcessorFactory.Create(_ringBuffer, sequenceBarrier, orderEventHandler);
-            _orderBatchProcessor.WaitUntilStarted(TimeSpan.FromSeconds(5));
+            _orderBatchProcessor.WaitUntilStarted(TimeSpan.FromSeconds(3));
             _tasks.Add(Task.Run(() => _orderBatchProcessor.Run()));
 
             IsRunning = true;

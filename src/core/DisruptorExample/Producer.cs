@@ -28,9 +28,7 @@ namespace DisruptorExample
                 @event.EventType = eventType;
                 if (eventType == EventType.OrderPlaced)
                 {
-                    @event.EventData.Order.Id = payload.Order.Id;
-                    @event.EventData.Order.AccountId = payload.Order.AccountId;
-                    @event.EventData.Order.Price = payload.Order.Price;
+                    @event.EventData.Order = payload.Order;
                 }
             }
         }
