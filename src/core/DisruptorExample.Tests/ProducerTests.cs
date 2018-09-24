@@ -21,19 +21,12 @@ namespace Tests
                 new SingleProducerSequencer(8, new YieldingWaitStrategy()));
             
             var target = new Producer(ringBuffer);
-            var message = new EventMessage
-            {
-                EventType = EventType.OrderPlaced,
-                EventData = new PayloadInfo
-                {
-                    Order = new OrderInfo
-                    {
-                        Id = GetOrderId(),
-                        AccountId = 100001L,
-                        Price = 100m
-                    }
-                }
-            };
+            
+            var message = EventMessageFactory.GetEventMessage();
+            message.EventType = EventType.OrderPlaced;
+            message.EventData.Order.Id = GetOrderId();
+            message.EventData.Order.AccountId = 100001L;
+            message.EventData.Order.Price = 100m;
 
             target.OnData(message);
             Assert.That(ringBuffer.ClaimAndGetPreallocated(0).EventData.Order.Id, Is.EqualTo(message.EventData.Order.Id));
