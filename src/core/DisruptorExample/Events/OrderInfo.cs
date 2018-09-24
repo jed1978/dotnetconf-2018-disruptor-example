@@ -1,9 +1,17 @@
+using System.Runtime.InteropServices;
+
 namespace DisruptorExample.Events
 {
+    [StructLayout(LayoutKind.Explicit)]
     public class OrderInfo
     {
-        public long Id { get; set; }
-        public long AccountId { get; set; }
-        public decimal Price { get; set; }
+        [FieldOffset(0)] 
+        public long Id;
+
+        [FieldOffset(8)]
+        public long AccountId;
+        
+        [FieldOffset(16)]
+        public decimal Price;
     }
 }

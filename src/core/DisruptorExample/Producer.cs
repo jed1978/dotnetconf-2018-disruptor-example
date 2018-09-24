@@ -14,19 +14,24 @@ namespace DisruptorExample
 
         public void OnData(EventMessage message)
         {
-            _ringBuffer.PublishEvent(Translator.Instance, message.EventData);
+            _ringBuffer.PublishEvent(Translator.Instance, message.EventType, message.EventData);
         }
 
-        private class Translator : IEventTranslatorOneArg<EventMessage, PayloadInfo>
+        private class Translator : IEventTranslatorTwoArg<EventMessage, EventType, PayloadInfo>
         {
             public static readonly Translator Instance = new Translator();
 
             private Translator(){}
             
-            public void TranslateTo(EventMessage @event, long sequence, PayloadInfo payload)
+            public void TranslateTo(EventMessage @event, long sequence, EventType eventType, PayloadInfo payload)
             {
-                @event.EventType = EventType.OrderPlaced;
-                @event.EventData = payload;
+                @event.EventType = eventType;
+                if (eventType == EventType.OrderPlaced)
+                {
+                    @event.EventData.Order.Id = payload.Order.Id;
+                    @event.EventData.Order.AccountId = payload.Order.AccountId;
+                    @event.EventData.Order.Price = payload.Order.Price;
+                }
             }
         }
     }
